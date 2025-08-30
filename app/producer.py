@@ -1,6 +1,7 @@
 import json
 import uuid
 import time
+import random
 from kafka import KafkaProducer
 
 producer = KafkaProducer(
@@ -26,14 +27,14 @@ if __name__ == '__main__':
         if user_message.lower() == 'exit':
             break
 
-        # Generate a unique ID for the user's message
         message_id = str(uuid.uuid4())
         
         payload = {'data': user_message}
         
-        if "fail" in user_message.lower():
+        # Simulate a 25% chance of failure
+        if random.random() < 0.25:
             payload['error'] = True
-            print("Message marked as failed.")
+            print("Message marked as failed (simulated random error).")
         
         produce_message(topic_name, message_id, payload)
         
