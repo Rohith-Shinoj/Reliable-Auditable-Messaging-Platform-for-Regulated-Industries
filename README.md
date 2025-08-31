@@ -12,7 +12,7 @@ The platform is built using docker-compose and consists of three main services:
 
 These services are wrraped around by a Python-based consumer application. User can enter any number of successive messages which are sent to a Kafka queue. It then consumes messages from Kafka, processes them based on business logic, and logs the outcomes to PostgreSQL if successful. Failed messages are sent to Redis for future inspection or resend without interrupting Kafka stream.
 
-### Setup
+### Setup (Manual) 
 
 ### 1. Prerequisites
 
@@ -33,8 +33,8 @@ docker ps -a
 ### 3. Sending Messages
 
 From the project root, run
-```python
-python app/producer.py
+```bash 
+docker-compose exec app python producer.py
 ```
 and enter messages to be sent. Unique user IDs will be generated for each message.
 
@@ -73,6 +73,18 @@ LRANGE dlq:events_topic 0 -1
 ```bash
 LPOP dlq:events_topic
 ```
+
+
+### Setup (Shell)
+
+In terminal, simply run:
+```bash
+chmod +x startup.sh
+./startup.sh
+```
+This script will automatically start all containers and services in detached mode in the background, then provide a menu based input system to send or view messages in either raw log format or cleaned and readable entries of text. Use this if you want to avoid the PostgreSQL and Redis terminals and send or view with minimal commands.
+
+
 
 
 
